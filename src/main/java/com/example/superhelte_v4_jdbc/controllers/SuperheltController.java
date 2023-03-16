@@ -4,12 +4,11 @@ import com.example.superhelte_v4_jdbc.dto.CityWithHeroes;
 import com.example.superhelte_v4_jdbc.dto.HeroWithNumberOfPowers;
 import com.example.superhelte_v4_jdbc.dto.HeroWithPowers;
 import com.example.superhelte_v4_jdbc.models.Superhelt;
-import com.example.superhelte_v4_jdbc.repositories.util.DB_Connector;
 import com.example.superhelte_v4_jdbc.services.SuperheltService;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,38 +22,10 @@ public class SuperheltController {
     }
 
     @RequestMapping(path="")
-    public ResponseEntity<?> seAlleHelte(@RequestParam (required = false) String format) {
-        if (format != null && format.equals("html")) {
-            List<Superhelt> superheltList = superheltService.getHeroes();
-            HttpHeaders responseHeaders = new HttpHeaders();
-            responseHeaders.set("Content-Type", "text/html");
-            StringBuilder stringBuilder = new StringBuilder();
-            stringBuilder.append("<html><body><table>");
-            stringBuilder.append("<tr>" +
-                            "<th> Hero Name </th>\n" +
-                            "<th> Private Name </th>\n" +
-                            "<th> CreationYear </th>\n" +
-                            "</tr>");
-            for (Superhelt superhelt : superheltList) {
-                stringBuilder.append("<tr>");
-                stringBuilder.append("<td>" + superhelt.getHeroName() + "</td>");
-                stringBuilder.append("<td>" + superhelt.getPrivateName() + "</td>");
-                stringBuilder.append("</tr>");
-            }
-            stringBuilder.append("</html></body></table>");
-
-            return new ResponseEntity<>(stringBuilder.toString(),
-                    responseHeaders, HttpStatus.OK);
-        } else {
-            List<Superhelt> superheltList = superheltService.getHeroes();
-            StringBuilder stringBuilder = new StringBuilder();
-            for (Superhelt superhelt : superheltList) {
-                stringBuilder.append("Hero Name: " + superhelt.getHeroName()).append("\n");
-                stringBuilder.append("Private Name: " + superhelt.getPrivateName()).append("\n");
-                stringBuilder.append("Creation Year: " + superhelt.getCreationYear()).append("\n").append("\n");
-            }
-            return new ResponseEntity<>(stringBuilder, HttpStatus.OK);
-        }
+    public String seAlleHelte(Model model) {
+        List<Superhelt> superhelte = superheltService.getHeroes();
+        model.addAttribute("helte", superhelte);
+        return "index";
     }
 
     @GetMapping(path="{navn}")
@@ -62,7 +33,7 @@ public class SuperheltController {
         return new ResponseEntity<>(superheltService.getHero(navn), HttpStatus.OK);
     }
 
-    @PostMapping(path="opret")
+    @PostMapping(path="add")
     public ResponseEntity<Superhelt> opretSuperhelt(@RequestBody String heroName, String privateName, int creationYear) {
         return new ResponseEntity<>(superheltService.createSuperhero(heroName, privateName, creationYear), HttpStatus.OK);
     }
@@ -100,20 +71,11 @@ public class SuperheltController {
     }
 
     @GetMapping(path="superpower/{navn}")
-    public ResponseEntity<String> getHeroWithPowers(@PathVariable String navn) {
-        StringBuilder stringBuilder = new StringBuilder();
+    public String getHeroWithPowers(@PathVariable String navn, Model model) {
         HeroWithPowers hero = superheltService.getHeroWithPowers(navn);
-        stringBuilder.append("Hero Name: " + hero.getHeroName()).append("\n");
-        stringBuilder.append("Private Name: " + hero.getPrivateName()).append("\n");
-        stringBuilder.append("Superpowers: ");
-        for (String superpower : hero.getSuperpowers()) {
-            if (superpower != hero.getSuperpowers().get(hero.getSuperpowers().size()-1)) {
-                stringBuilder.append(superpower + ", ");
-            } else {
-                stringBuilder.append(superpower + ".\n").append("\n");
-            }
-        }
-        return new ResponseEntity<>(stringBuilder.toString(), HttpStatus.OK);
+        model.addAttribute("name", hero.getHeroName());
+        model.addAttribute("powers", hero.getSuperpowers());
+        return "powers";
     }
 
     @GetMapping(path="superpower")

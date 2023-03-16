@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link th:href="@{/main.css}" rel="stylesheet">
+    <title>Superpowers</title>
+</head>
+<body>
+
+<h1> <span th:text="${name}"/>'s superpower </h1>
+<table class="table table-dark">
+    <tbody>
+    <tr th:each="power: ${powers}">
+        <td th:text="${power}"/>
+    </tr>
+    </tbody>
+</table>
+
+<p>
+    <button>
+        <a href="/superhelte" target="_self">Tilbage</a>
+    </button>
+</p>
+
+</body>
+</html>
