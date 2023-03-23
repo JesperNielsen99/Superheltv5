@@ -33,6 +33,11 @@ public class SuperheltController {
         return new ResponseEntity<>(superheltService.getHero(navn), HttpStatus.OK);
     }
 
+    @GetMapping(path="add")
+    public String opretSuperhelt() {
+        return "edit";
+    }
+
     @PostMapping(path="add")
     public ResponseEntity<Superhelt> opretSuperhelt(@RequestBody String heroName, String privateName, int creationYear) {
         return new ResponseEntity<>(superheltService.createSuperhero(heroName, privateName, creationYear), HttpStatus.OK);
