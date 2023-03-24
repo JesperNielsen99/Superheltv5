@@ -197,4 +197,36 @@ public class SuperheltRepository_DB implements ISuperheltRepository {
             throw new RuntimeException(e);
         }
     }
+
+    public List<String> getCities() {
+        try {
+            Connection connection = DB_Connector.getConnection();
+            String SQL = "SELECT CityName FROM city";
+            Statement stmt = connection.createStatement();
+            ResultSet resultSet = stmt.executeQuery(SQL);
+            List<String> cities = new ArrayList<>();
+            while (resultSet.next()) {;
+                cities.add(resultSet.getString("CityName"));
+            }
+            return cities;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public List<String> getPowers() {
+        try {
+            Connection connection = DB_Connector.getConnection();
+            String SQL = "SELECT PowerName FROM superpower";
+            Statement stmt = connection.createStatement();
+            ResultSet resultSet = stmt.executeQuery(SQL);
+            List<String> superpowers = new ArrayList<>();
+            while (resultSet.next()) {;
+                superpowers.add(resultSet.getString("PowerName"));
+            }
+            return superpowers;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

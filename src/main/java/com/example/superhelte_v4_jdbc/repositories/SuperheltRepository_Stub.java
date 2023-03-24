@@ -110,4 +110,16 @@ public class SuperheltRepository_Stub implements ISuperheltRepository {
         }
         return cityWithHeroes;
     }
+
+    public List<String> getCities() {
+        List<String> cities = new ArrayList<>();
+        for (City city : this.cities) {
+            cities.add(city.getCityName());
+        }
+        return cities;
+    }
+
+    public List<String> getPowers() {
+        return null;
+    }
 }

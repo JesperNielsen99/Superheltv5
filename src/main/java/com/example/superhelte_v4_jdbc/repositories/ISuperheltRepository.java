@@ -12,10 +12,12 @@ public interface ISuperheltRepository {
     List<Superhelt> getHeroes();
     HeroWithNumberOfPowers getHeroWithSuperpowerCount(String name);
     List<HeroWithNumberOfPowers> getHeroesWithSuperpowerCount();
-
     HeroWithPowers getHeroWithPowers(String heroName);
     List<HeroWithPowers> getHeroesWithPowers();
-
     CityWithHeroes getCityAndHeroes(String cityName);
     List<CityWithHeroes> getCitiesAndHeroes();
+    List<String> getCities();
+    List<String> getPowers();
+
+
 }

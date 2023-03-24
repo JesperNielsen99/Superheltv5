@@ -63,4 +63,12 @@ public class SuperheltService {
     public List<CityWithHeroes> getCitiesAndHeroes() {
         return repository.getCitiesAndHeroes();
     }
+
+    public List<String> getCities() {
+        return repository.getCities();
+    }
+
+    public List<String> getPowers() {
+        return repository.getPowers();
+    }
 }

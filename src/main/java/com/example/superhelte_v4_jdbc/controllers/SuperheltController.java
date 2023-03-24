@@ -3,6 +3,7 @@ package com.example.superhelte_v4_jdbc.controllers;
 import com.example.superhelte_v4_jdbc.dto.CityWithHeroes;
 import com.example.superhelte_v4_jdbc.dto.HeroWithNumberOfPowers;
 import com.example.superhelte_v4_jdbc.dto.HeroWithPowers;
+import com.example.superhelte_v4_jdbc.dto.SuperheroForm;
 import com.example.superhelte_v4_jdbc.models.Superhelt;
 import com.example.superhelte_v4_jdbc.services.SuperheltService;
 import org.springframework.http.HttpStatus;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -34,13 +36,18 @@ public class SuperheltController {
     }
 
     @GetMapping(path="add")
-    public String opretSuperhelt() {
-        return "edit";
+    public String opretSuperhelt(Model model) {
+        List<String> cities = superheltService.getCities();
+        SuperheroForm superheroForm = new SuperheroForm();
+        model.addAttribute("superheroForm", superheroForm);
+        model.addAttribute("cities", cities);
+        return "createForm";
     }
 
     @PostMapping(path="add")
-    public ResponseEntity<Superhelt> opretSuperhelt(@RequestBody String heroName, String privateName, int creationYear) {
-        return new ResponseEntity<>(superheltService.createSuperhero(heroName, privateName, creationYear), HttpStatus.OK);
+    public String opretSuperheltSubmit(SuperheroForm superheroForm) {
+        String selectedValue = superheroForm.getCity();
+        return "redirect:/";
     }
 
     @PutMapping(path="ret")

@@ -49,3 +49,8 @@ button {
 a {
     color: #00ff00 !important;
 }
+
+select, input[type="text"], input[type="number"]{
+    width:200px;
+    box-sizing:border-box;
+}
