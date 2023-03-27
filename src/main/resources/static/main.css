@@ -12,6 +12,10 @@ h1 {
     font-size: 1.5em;
 }
 
+.check-button {
+    accent-color: red;
+}
+
 label {
     font-family: "Courier New", Courier, monospace;
     color: lawngreen;
@@ -40,7 +44,7 @@ p {
     margin-bottom: 10px;
 }
 
-button {
+button, select{
     border: 2px solid #00ff00;
     background-color: black;
     color: #00ff00 !important;
@@ -50,7 +54,14 @@ a {
     color: #00ff00 !important;
 }
 
-select, input[type="text"], input[type="number"]{
+input[type="text"], input[type="number"] {
+    border: 2px solid #00ff00;
+    background-color: black;
+    color: #00ff00 !important;
     width:200px;
     box-sizing:border-box;
+}
+
+div {
+    color: #00ff00 !important;
 }

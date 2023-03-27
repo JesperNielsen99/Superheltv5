@@ -3,6 +3,7 @@ package com.example.superhelte_v4_jdbc.repositories;
 import com.example.superhelte_v4_jdbc.dto.CityWithHeroes;
 import com.example.superhelte_v4_jdbc.dto.HeroWithNumberOfPowers;
 import com.example.superhelte_v4_jdbc.dto.HeroWithPowers;
+import com.example.superhelte_v4_jdbc.dto.SuperheroForm;
 import com.example.superhelte_v4_jdbc.models.Superhelt;
 import com.example.superhelte_v4_jdbc.repositories.util.DB_Connector;
 import org.springframework.stereotype.Repository;
@@ -225,6 +226,54 @@ public class SuperheltRepository_DB implements ISuperheltRepository {
                 superpowers.add(resultSet.getString("PowerName"));
             }
             return superpowers;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void addSuperhero(SuperheroForm superheroForm) {
+        String SQLNoInjection = "";
+        ResultSet resultSet = null;
+        PreparedStatement preparedStatement = null;
+        try {
+            Connection connection = DB_Connector.getConnection();
+            SQLNoInjection = "SELECT CityID From city " +
+                    "WHERE CityName = ?";
+            preparedStatement = connection.prepareStatement(SQLNoInjection);
+            preparedStatement.setString(1, superheroForm.getCity());
+            resultSet = preparedStatement.executeQuery();
+            int cityID = 0;
+            if (resultSet.next()) {
+                cityID = resultSet.getInt("CityID");
+            }
+
+            SQLNoInjection = "INSERT INTO superhero (HeroName, PrivateName, CreationYear, CityID) " +
+                    "VALUES (?, ?, ?, ?)";
+            preparedStatement = connection.prepareStatement(SQLNoInjection, Statement.RETURN_GENERATED_KEYS);
+            preparedStatement.setString(1, superheroForm.getHeroName());
+            preparedStatement.setString(2, superheroForm.getPrivateName());
+            preparedStatement.setInt(3, superheroForm.getCreationYear());
+            preparedStatement.setInt(4, cityID);
+            int rows = preparedStatement.executeUpdate();
+            resultSet = preparedStatement.getGeneratedKeys();
+            int heroID = 0;
+            if (resultSet.next()) {
+                heroID = resultSet.getInt(1);
+            }
+
+            for(int i = 0; i < superheroForm.getPowerList().size(); i++) {
+                SQLNoInjection = "SELECT PowerID FROM superpower WHERE PowerName = ?";
+                preparedStatement = connection.prepareStatement(SQLNoInjection);
+                preparedStatement.setString(1, superheroForm.getPowerList().get(i));
+                resultSet = preparedStatement.executeQuery();
+                if (resultSet.next()) {
+                    SQLNoInjection = " INSERT INTO superhero_power (HeroID, PowerID) VALUES (?, ?)";
+                    preparedStatement = connection.prepareStatement(SQLNoInjection);
+                    preparedStatement.setInt(1, heroID);
+                    preparedStatement.setInt(2, resultSet.getInt("PowerID"));
+                    preparedStatement.executeUpdate();
+                }
+            }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

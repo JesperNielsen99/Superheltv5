@@ -3,16 +3,27 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-  <link th:href="@{/mainStyle.css}" rel="stylesheet">
+    <link th:href="@{/main.css}" rel="stylesheet">
     <title>Create Superhero</title>
 </head>
 <body>
+  <h1>Create Superhero Form</h1>
   <form th:object="${superheroForm}" method="post">
-    <select th:field="*{selectedValue}">
-      <option value="">--Please select--</option>
-      <option th:each="value : ${cities}" th:value="${value}" th:text="${value}"></option>
+    <p>Hero Name: <input type="text" th:field="*{heroName}" /></p>
+    <p>Private Name: <input type="text" th:field="*{privateName}" /></p>
+    <p>Creation Year: <input type="number" min="0" max="2023" th:field="*{creationYear}" /></p>
+    <p>
+    <select th:field="*{city}">
+      <option th:align="center" value="">--Select City--</option>
+        <option th:each="city : ${cities}" th:value="${city}" th:text="${city}"></option>
     </select>
-    <button type="submit">Submit</button>
+    </p>
+    <p>
+      <div th:each="value : ${powers}">
+        <input type="checkbox" class="checkbox" th:field="*{powerList}" th:value="${value}" th:text="${value}" />
+      </div>
+    </p>
+    <p> <button type="submit">Submit</button> <button type="reset"> Reset </button> </p>
   </form>
 </body>
 </html>

@@ -3,6 +3,7 @@ package com.example.superhelte_v4_jdbc.repositories;
 import com.example.superhelte_v4_jdbc.dto.CityWithHeroes;
 import com.example.superhelte_v4_jdbc.dto.HeroWithNumberOfPowers;
 import com.example.superhelte_v4_jdbc.dto.HeroWithPowers;
+import com.example.superhelte_v4_jdbc.dto.SuperheroForm;
 import com.example.superhelte_v4_jdbc.models.City;
 import com.example.superhelte_v4_jdbc.models.Superhelt;
 import org.springframework.stereotype.Repository;
@@ -122,4 +123,6 @@ public class SuperheltRepository_Stub implements ISuperheltRepository {
     public List<String> getPowers() {
         return null;
     }
+
+    public void addSuperhero(SuperheroForm superheroForm) {}
 }

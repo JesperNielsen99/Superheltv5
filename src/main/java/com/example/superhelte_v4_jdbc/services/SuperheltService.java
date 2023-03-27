@@ -3,6 +3,7 @@ package com.example.superhelte_v4_jdbc.services;
 import com.example.superhelte_v4_jdbc.dto.CityWithHeroes;
 import com.example.superhelte_v4_jdbc.dto.HeroWithNumberOfPowers;
 import com.example.superhelte_v4_jdbc.dto.HeroWithPowers;
+import com.example.superhelte_v4_jdbc.dto.SuperheroForm;
 import com.example.superhelte_v4_jdbc.models.Superhelt;
 import com.example.superhelte_v4_jdbc.repositories.ISuperheltRepository;
 import com.example.superhelte_v4_jdbc.repositories.SuperheltRepository_DB;
@@ -70,5 +71,9 @@ public class SuperheltService {
 
     public List<String> getPowers() {
         return repository.getPowers();
+    }
+
+    public void addSuperhero(SuperheroForm superheroForm) {
+        repository.addSuperhero(superheroForm);
     }
 }
